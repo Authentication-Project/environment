@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+    
+    machine:
+        build:
+            context: $HOME/repo/node_course/auth_node/
+            dockerfile: $HOME/repo/node_course/local_deploy/Dockerfile_node
+        container_name: api_node
+        volumes:
+            - $HOME/repo/node_course/auth_node/:/code
+            - /code/node_modules
+        ports:
+            - "4000:8081"
+        env_file:
+            - $HOME/repo/node_course/auth_node/.env
+        depends_on:
+            - db
+
+    db:
+        build:
+            context: .
+            dockerfile: Dockerfile_postgres
+        container_name: postgres
+        restart: always
+        env_file: 
+            - .env        
+        volumes:
+            - ../data:/var/lib/postgresql/data
+        ports:
+            - "5005:5432"    
+
+    angularfrontend:
+        build:
+            context: $HOME/repo/node_course/auth_angular/
+            dockerfile: $HOME/repo/node_course/local_deploy/Dockerfile_angular
+        container_name: angular
+        volumes:
+            - $HOME/repo/node_course/auth_angular/:/code
+            - /code/node_modules
+        ports:
+            - "8081:4200"
+        depends_on:
+            - machine
+        links:
+            - machine            
+

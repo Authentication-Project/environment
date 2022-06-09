@@ -1,0 +1,9 @@
+FROM postgres:11-alpine
+
+# COPY ./data/schema.sql /docker-entrypoint-initdb.d/
+WORKDIR /code
+
+COPY ./createdb.sh /docker-entrypoint-initdb.d/
+COPY ./data/schema.sql /code/bcksis_analytics1.sql
+
+EXPOSE 5432
