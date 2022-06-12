@@ -11,9 +11,9 @@ services:
             - $HOME/repo/node_course/auth_node/:/code
             - /code/node_modules
         ports:
-            - "4000:8081"
+            - "4000:4000"
         env_file:
-            - $HOME/repo/node_course/auth_node/.env
+            - $HOME/repo/node_course/auth_node/.env.dev
         depends_on:
             - db
 
@@ -24,7 +24,7 @@ services:
         container_name: postgres
         restart: always
         env_file: 
-            - .env        
+            - .env.dev.db
         volumes:
             - ../data:/var/lib/postgresql/data
         ports:
