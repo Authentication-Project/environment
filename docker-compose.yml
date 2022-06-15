@@ -41,7 +41,22 @@ services:
         ports:
             - "8081:4200"
         depends_on:
+            - graphql_proxy
+        links:
+            - graphql_proxy
+
+    graphql_proxy:
+        build:
+            context: $HOME/repo/node_course/auth_graphql/
+            dockerfile: $HOME/repo/node_course/local_deploy/Dockerfile_python
+        container_name: graphql
+        volumes:
+            - $HOME/repo/node_course/auth_graphql/:/app
+        ports:
+            - "8082:5000"
+        env_file:
+            - $HOME/repo/node_course/auth_graphql/.env.dev
+        depends_on:
             - machine
         links:
-            - machine            
-
+            - machine
